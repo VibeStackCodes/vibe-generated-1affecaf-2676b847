@@ -1,5 +1,30 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import App from '@/App'
+
+/**
+ * Lazy-loaded page components for code splitting
+ */
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'))
+const TransactionsPage = lazy(() => import('@/pages/TransactionsPage'))
+const QuickAddPage = lazy(() => import('@/pages/QuickAddPage'))
+const CategoriesPage = lazy(() => import('@/pages/CategoriesPage'))
+const ImportPage = lazy(() => import('@/pages/ImportPage'))
+const TemplatesPage = lazy(() => import('@/pages/TemplatesPage'))
+const AuditLogPage = lazy(() => import('@/pages/AuditLogPage'))
+const UsersPage = lazy(() => import('@/pages/UsersPage'))
+
+/**
+ * Loading fallback component
+ */
+const PageLoader = () => (
+  <div className="flex items-center justify-center py-12">
+    <div className="text-center">
+      <div className="animate-spin inline-block w-8 h-8 border-4 border-[#003d82] border-t-transparent rounded-full mb-4"></div>
+      <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+    </div>
+  </div>
+)
 
 /**
  * Get basename dynamically from window location or environment
@@ -50,10 +75,70 @@ export const router = createBrowserRouter(
       children: [
         {
           index: true,
+          element: <Navigate to="/dashboard" replace />,
+        },
+        {
+          path: 'dashboard',
           element: (
-            <div className="flex min-h-screen items-center justify-center">
-              <p className="text-muted-foreground">Start building your app</p>
-            </div>
+            <Suspense fallback={<PageLoader />}>
+              <DashboardPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'transactions',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <TransactionsPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'quick-add',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <QuickAddPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'categories',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <CategoriesPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'import',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <ImportPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'templates',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <TemplatesPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'audit-log',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <AuditLogPage />
+            </Suspense>
+          ),
+        },
+        {
+          path: 'users',
+          element: (
+            <Suspense fallback={<PageLoader />}>
+              <UsersPage />
+            </Suspense>
           ),
         },
       ],
